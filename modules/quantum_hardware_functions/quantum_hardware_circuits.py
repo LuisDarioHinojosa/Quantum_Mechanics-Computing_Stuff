@@ -84,9 +84,9 @@ def qmux():
 # quantum demultiplexer
 def qdemux():
   qdemux_q = QuantumRegister(6)
-  q_demux_template = QuantumCircuit(qmux_q)
-  q_demux_template.cswap(qmux_q[1],qmux_q[2],qmux_q[3])
-  q_demux_template.cswap(qmux_q[0],qmux_q[2],qmux_q[4])
-  q_demux_template.cswap(qmux_q[0],qmux_q[3],qmux_q[5])
+  q_demux_template = QuantumCircuit(qdemux_q)
+  q_demux_template.cswap(qdemux_q[1],qdemux_q[2],qdemux_q[3])
+  q_demux_template.cswap(qdemux_q[0],qdemux_q[2],qdemux_q[4])
+  q_demux_template.cswap(qdemux_q[0],qdemux_q[3],qdemux_q[5])
   return q_demux_template
   
