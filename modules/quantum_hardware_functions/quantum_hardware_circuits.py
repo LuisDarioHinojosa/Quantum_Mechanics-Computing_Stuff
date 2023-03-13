@@ -18,7 +18,7 @@ def mqcc():
   # equal
   mqcc_qc.x(mqcc_qr[0])
   mqcc_qc.cx(mqcc_qr[0],mqcc_qr[1])
-  return mqcc_qc.to_gate(label="MQCC_gate")
+  return mqcc_qc
 
 # quantum bit string circuit
 def qbsc():
@@ -29,7 +29,7 @@ def qbsc():
   qbsc.crx(-math.pi/2,qcr[0],qcr[2])
   qbsc.csx(qcr[1],qcr[2])
   qbsc.cx(qcr[0],qcr[1])
-  return qbsc.to_gate(label = "QBSC_gate")
+  return qbsc
 
 # quantum half adder
 def qha():
@@ -37,7 +37,7 @@ def qha():
   qha_template = QuantumCircuit(qha_qr)
   qha_template.ccx(qha_qr[0],qha_qr[1],qha_qr[2])
   qha_template.cnot(qha_qr[0],qha_qr[1])
-  return qha_template.to_gate(label = "QHA_gate")
+  return qha_template
 
 # quantum full adder
 def qfa():
@@ -49,7 +49,7 @@ def qfa():
   qfa_template.csx(qfa_qr[0],qfa_qr[3])
   qfa_template.cx(qfa_qr[1],qfa_qr[2])
   qfa_template.crx(-math.pi / 2,qfa_qr[2],qfa_qr[3])
-  return qfa_template.to_gate(label = "QHA_gate")
+  return qfa_template
 
 # quantum full substractor
 def qfs():
@@ -61,8 +61,7 @@ def qfs():
   qfs_template.cx(qfs_qr[0],qfs_qr[2])
   qfs_template.csx(qfs_qr[0],qfs_qr[3])
   qfs_template.csx(qfs_qr[2],qfs_qr[3])
-  return qfs_template.to_gate(label = "QFS_gate")
-
+  return qfs_template
 # quantum half substractor
 def qhs():
   qhs_qr = QuantumRegister(3)
@@ -71,7 +70,7 @@ def qhs():
   qhs_template.cx(qhs_qr[0],qhs_qr[1])
   qhs_template.csx(qhs_qr[0],qhs_qr[2])
   qhs_template.csx(qhs_qr[1],qhs_qr[2])
-  return qhs_template.to_gate(label = "QHS_gate")
+  return qhs_template
 
 # quantum multiplexed
 def qmux():
@@ -80,7 +79,7 @@ def qmux():
   q_mux_template.cswap(qmux_q[1],qmux_q[2],qmux_q[3])
   q_mux_template.cswap(qmux_q[1],qmux_q[4],qmux_q[5])
   q_mux_template.cswap(qmux_q[0],qmux_q[3],qmux_q[5])
-  return q_mux_template.to_gate(label = "QMUX_gate")
+  return q_mux_template
 
 # quantum demultiplexer
 def qdemux():
@@ -89,6 +88,5 @@ def qdemux():
   q_demux_template.cswap(qmux_q[1],qmux_q[2],qmux_q[3])
   q_demux_template.cswap(qmux_q[0],qmux_q[2],qmux_q[4])
   q_demux_template.cswap(qmux_q[0],qmux_q[3],qmux_q[5])
-  return q_demux_template.to_gate(label = "QDEMUX_gate")
-
+  return q_demux_template
   
