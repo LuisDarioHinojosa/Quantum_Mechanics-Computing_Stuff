@@ -1,6 +1,7 @@
 # Quantum Gates Utils (Currently Not Implemented)
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 import math
+from modules.experiment_utils import state_generator
 
 # midpoint qubit comparison circuit 
 def mqcc():
@@ -90,3 +91,16 @@ def qdemux():
   q_demux_template.cswap(qdemux_q[0],qdemux_q[3],qdemux_q[5])
   return q_demux_template
   
+# 4 bit adder
+def adder_4_qubits(q1,q2):
+  qubits = len(q1)+len(q2) + 5
+  qr = QuantumRegister(qubits)
+  cr = ClassicalRegister(qubits)
+  qc = QuantumCircuit(qr,cr)
+  initialized_state = state_generator(q1[::-1] + q2[::-1] + "00000")
+  qc.initialize(initialized_state,qr)
+  qc.append(qfa(),[0,4,8,9])
+  qc.append(qfa(),[1,5,9,10])
+  qc.append(qfa(),[2,6,10,11])
+  qc.append(qfa(),[3,7,11,12])
+  return qc
