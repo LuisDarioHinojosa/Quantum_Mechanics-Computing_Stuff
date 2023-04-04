@@ -12,7 +12,7 @@ def ideal_qc_simulation(exp,backend,num_measurements = 1024):
   result = job.result()
   return result.get_counts()
 
-def stateGenerator(state):
+def state_generator(state):
     state = state[::-1]
     current = int(state, 2)
     newState = [0 for i in range(0, 2**(len(state)))]
