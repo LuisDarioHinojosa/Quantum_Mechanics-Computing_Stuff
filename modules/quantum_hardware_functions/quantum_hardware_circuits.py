@@ -1,7 +1,6 @@
 # Quantum Gates Utils (Currently Not Implemented)
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 import math
-from modules.experiment_utils import state_generator
 
 # midpoint qubit comparison circuit 
 def mqcc():
@@ -63,6 +62,7 @@ def qfs():
   qfs_template.csx(qfs_qr[0],qfs_qr[3])
   qfs_template.csx(qfs_qr[2],qfs_qr[3])
   return qfs_template
+
 # quantum half substractor
 def qhs():
   qhs_qr = QuantumRegister(3)
@@ -90,17 +90,17 @@ def qdemux():
   q_demux_template.cswap(qdemux_q[0],qdemux_q[2],qdemux_q[4])
   q_demux_template.cswap(qdemux_q[0],qdemux_q[3],qdemux_q[5])
   return q_demux_template
-  
-# 4 bit adder
-def adder_4_qubits(q1,q2):
-  qubits = len(q1)+len(q2) + 5
-  qr = QuantumRegister(qubits)
-  cr = ClassicalRegister(qubits)
-  qc = QuantumCircuit(qr,cr)
-  initialized_state = state_generator(q1[::-1] + q2[::-1] + "00000")
-  qc.initialize(initialized_state,qr)
-  qc.append(qfa(),[0,4,8,9])
-  qc.append(qfa(),[1,5,9,10])
-  qc.append(qfa(),[2,6,10,11])
-  qc.append(qfa(),[3,7,11,12])
+
+# quantum_multiplier 2 to 1
+def q_mult_2_1():
+  qr = QuantumRegister(10)
+  qc = QuantumCircuit(qr)
+  # add the tofoli gates to copy the x bits to the full adder's input'
+  qc.ccx(qr[0],qr[1],qr[3])
+  qc.ccx(qr[0],qr[2],qr[7])
+  # instance two quantum full adders
+  qfa_1 = qfa()
+  qfa_2 = qfa()
+  qc.append(qfa_1,[qr[3],qr[4],qr[5],qr[6]])
+  qc.append(qfa_2,[qr[6],qr[7],qr[8],qr[9]])
   return qc
