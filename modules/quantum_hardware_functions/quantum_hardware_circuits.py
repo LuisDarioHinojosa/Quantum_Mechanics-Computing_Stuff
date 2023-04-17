@@ -102,5 +102,5 @@ def q_mult_2_1():
   qfa_1 = qfa()
   qfa_2 = qfa()
   qc.append(qfa_1,[qr[3],qr[4],qr[5],qr[6]])
-  qc.append(qfa_2,[qr[6],qr[7],qr[8],qr[9]])
+  qc.append(qfa_2,[qr[7],qr[8],qr[6],qr[9]])
   return qc
