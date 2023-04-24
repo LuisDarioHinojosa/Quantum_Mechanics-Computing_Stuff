@@ -104,3 +104,70 @@ def q_mult_2_1():
   qc.append(qfa_1,[qr[3],qr[4],qr[5],qr[6]])
   qc.append(qfa_2,[qr[7],qr[8],qr[6],qr[9]])
   return qc
+
+def q_mult_2_2():
+  qr = QuantumRegister(14)
+  qc = QuantumCircuit(qr)
+
+  # copy qubits into the adders' inputs 
+  qc.ccx(qr[0],qr[2],qr[4])
+  qc.ccx(qr[0],qr[3],qr[8])
+  qc.ccx(qr[1],qr[2],qr[9])
+  qc.ccx(qr[1],qr[3],qr[11])
+
+  # instance quantum full adders
+  qfa_1 = qfa()
+  qfa_2 = qfa()
+  qfa_3 = qfa()
+
+  # add the full adders
+  qc.append(qfa_1,[qr[4],qr[5],qr[6],qr[7]])
+  qc.append(qfa_2,[qr[8],qr[9],qr[7],qr[10]])
+  qc.append(qfa_3,[qr[11],qr[12],qr[10],qr[13]])
+
+  return qc
+
+"""
+In order for the encoder and decoder to work, some qubits must be set to |1> at the begginning of the circuit.
+Therefore, the 'initialize_quantum_state' option will set the corresponding qubits to |1> if set to 'True'.
+You may or may not need it depeding on the experiment. This is why the option was added.
+"""
+
+# quantum encoder bcd 
+def quantum_bdc_encoder_4_2(initialize_quantum_state = False):
+  # instance quantum circuit
+  qr = QuantumRegister(6)
+  qc = QuantumCircuit(qr)
+  # apply not gates
+  qc.x(qr[0])
+  qc.x(qr[1])
+  qc.x(qr[2])
+
+  if initialize_quantum_state:
+    # these are because we must send |1> to the 4 and 5th qubits
+    qc.x(qr[4])
+    qc.x(qr[5])
+  
+  # apply toffoli gates
+  qc.ccx(qr[0],qr[1],qr[4])
+  qc.ccx(qr[0],qr[2],qr[5])
+  return qc
+
+# quantum decoder bcd 
+def quantum_bdc_decoder_4_2(initialize_quantum_state = False):
+  # instance quantum circuit
+  qr = QuantumRegister(4)
+  qc = QuantumCircuit(qr)
+  if initialize_quantum_state:
+    # this gate must receibe |1> on for the circuit to work
+    qc.x(qr[3])
+  # build the quantum circuit
+  qc.cx(qr[0],qr[3])
+  qc.ccx(qr[1],qr[3],qr[2])
+  qc.cx(qr[2],qr[1])
+  qc.swap(qr[0],qr[1])
+  qc.cx(qr[2],qr[3])
+  qc.cx(qr[0],qr[1])
+
+  return qc
+
