@@ -171,3 +171,46 @@ def quantum_bdc_decoder_4_2(initialize_quantum_state = False):
 
   return qc
 
+
+"""
+This two functions provide the functionality required to simulate a quantum shifter and rotator (classical computing bit operations).
+One is for performing the operations to the left, and the other one is of performing the operations to the right.
+The main difference between the quantum shifter and the quantion rotator is that one losses the information and the other one shifts 
+the last bit to the oposite side of the sequence.
+You may change the function's functionality depending on the qubits you measure:
+
+|        | rotator     | shifter   |
+|--------|-------------|-----------|
+| qubits | [1,2,3,4,5] | [1,2,3,4] |
+
+Like with the quantum encoder and decoder, you need a qubit in the exited state |1> for the circuit to work.
+You may set up the initialize_quantum_state parameter to True for it to be initialized, but it depends on the problem context.
+"""
+
+def right_shifter_rotator(initialize_quantum_state = False):
+  QUBIT_NUM = 6
+  qr = QuantumRegister(QUBIT_NUM)
+  qc = QuantumCircuit(qr)
+  # initialized ket 0 to |1>
+  if initialize_quantum_state:
+    qc.x(qr[0])
+  # implement quantum circuit
+  qc.cswap(qr[0],qr[1],qr[2])
+  qc.cswap(qr[0],qr[2],qr[3])
+  qc.cswap(qr[0],qr[3],qr[4])
+  qc.cswap(qr[0],qr[4],qr[5])
+  return qc
+
+def left_shifter_rotator(initialize_quantum_state = False):
+  QUBIT_NUM = 6
+  qr = QuantumRegister(QUBIT_NUM)
+  qc = QuantumCircuit(qr)
+  # initialized ket 0 to |1>
+  if initialize_quantum_state:
+    qc.x(qr[0])
+  # implement quantum circuit
+  qc.cswap(qr[0],qr[4],qr[5])
+  qc.cswap(qr[0],qr[3],qr[4])
+  qc.cswap(qr[0],qr[2],qr[3])
+  qc.cswap(qr[0],qr[1],qr[2])
+  return qc
