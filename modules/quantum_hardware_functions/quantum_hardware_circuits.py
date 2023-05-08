@@ -214,3 +214,32 @@ def left_shifter_rotator(initialize_quantum_state = False):
   qc.cswap(qr[0],qr[2],qr[3])
   qc.cswap(qr[0],qr[1],qr[2])
   return qc
+
+
+# quntum incrementer and decrement quantum_hardware_circuits (for any number of qubits)
+
+def increment_circuit(num_qubits):
+  # instance quantum circuit
+  qr = QuantumRegister(num_qubits)
+  qc = QuantumCircuit(qr)
+
+  # implement the quantum circuit
+  for i in range(num_qubits-1):
+    qc.mct(list(reversed(qc.qubits[i+1:])),qr[i])
+
+  qc.x(qc.qubits[-1])
+
+  return qc
+
+def decrement_circuit(num_qubits):
+  # instance quantum circuit
+  qr = QuantumRegister(num_qubits)
+  qc = QuantumCircuit(qr)
+
+  # implement the quantum circuit
+  qc.x(qc.qubits[-1])
+  
+  for i in reversed(range(1,num_qubits)):
+    qc.mct(list(reversed(qc.qubits[i:])),qr[i-1])
+
+  return qc
