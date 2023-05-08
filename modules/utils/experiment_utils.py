@@ -48,5 +48,5 @@ def make_meaurement(qc,qr,cr,output_qubits,irregular = False):
     for q in output_qubits:
       qc.measure(qr[q],cr[q])
   else:
-    for c,q in ennumerate(output_qubits):
+    for c,q in enumerate(output_qubits):
       qc.measure(qr[q],qc[c])

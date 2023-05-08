@@ -243,3 +243,29 @@ def decrement_circuit(num_qubits):
     qc.mct(list(reversed(qc.qubits[i:])),qr[i-1])
 
   return qc
+
+# quantum alu
+def quantum_alu():
+  qr = QuantumRegister(7)
+  qc = QuantumCircuit(qr)
+  # implement circuit 
+  qc.csx(0,6)
+  qc.csx(5,6)
+  qc.cx(0,5)
+  qc.crx(- math.pi / 2,5,6)
+  qc.cx(0,5)
+  qc.csx(1,6)
+  qc.csx(3,6)
+  qc.cx(1,3)
+  qc.crx(- math.pi / 2,3,6)
+  qc.cx(2,6)
+  qc.cx(4,6)
+  return qc, {
+      '+':'11000',
+      '-':'11100',
+      'xor':'10000',
+      'xnor':'10100',
+      '+1':'11010',
+      '-1':'11111',
+      'neg':'00100'
+  }
