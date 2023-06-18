@@ -2,6 +2,10 @@ from qiskit.providers.aer import QasmSimulator
 from qiskit.visualization import plot_bloch_multivector
 from qiskit import transpile,execute
 
+"""
+Miscelaneus functions to perform general task in making quantum computing experiments
+"""
+
 
 # function to plot the quantum state in terms of the block sphere (useful for visualizing superposition outputs)
 def plot_block_sphere(exp,backend):
