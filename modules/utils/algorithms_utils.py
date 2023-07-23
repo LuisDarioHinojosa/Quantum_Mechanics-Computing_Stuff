@@ -3,6 +3,11 @@ from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from experiment_utils import *
 import random
 import qiskit_textbook.tools as qt
+import os
+import sys
+
+file_dir = os.path.dirname(__file__)
+sys.path.append(file_dir)
 
 """
 Functions related to quantum algorithms

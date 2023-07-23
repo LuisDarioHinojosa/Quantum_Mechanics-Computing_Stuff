@@ -1,6 +1,12 @@
 from qiskit.providers.aer import QasmSimulator
 from qiskit.visualization import plot_bloch_multivector
 from qiskit import transpile,execute
+import os
+import sys
+
+file_dir = os.path.dirname(__file__)
+sys.path.append(file_dir)
+
 
 """
 Miscelaneus functions to perform general task in making quantum computing experiments
