@@ -2,7 +2,7 @@ from math import pi
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from experiment_utils import *
 import random
-from qiskit_textbook.tools import simon_oracle
+import qiskit_textbook.tools as qt
 import os
 import sys
 
@@ -56,7 +56,7 @@ def simonCircuit(s):
     qc.h(range(n))
     qc.barrier()
     # apply the unknown oracle function
-    qc += simon_oracle(s)
+    qc.append(qt.simon_oracle(s),qc.qubits)
     qc.barrier()
     # measure
     qc.measure(range(n, 2*n), range(n, 2*n))
