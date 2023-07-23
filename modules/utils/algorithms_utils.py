@@ -49,7 +49,8 @@ def simon_circuit(s):
    # apply haddamard to get superposition
    qc.h(range(n))
    qc.barrier()
-   qc += qt.simon_oracle(s)
+   so = qt.simon_oracle(s)
+   qc = qc.append(so)
    qc.barrier()
    # measure the lower circuits (|0>)
    qc.measure(range(2*n),range(2*n))
