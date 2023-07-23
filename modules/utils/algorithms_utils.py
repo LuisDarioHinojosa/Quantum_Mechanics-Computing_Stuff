@@ -42,7 +42,7 @@ def qft(circuit, n):
 """
 This functions are of my own authoring.
 """
-def simonCircuit(s):
+def simon_circuit(s):
     """
     Inputs: Secret sequence s
     Problem statement:
