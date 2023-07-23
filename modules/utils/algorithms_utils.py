@@ -2,6 +2,8 @@ from math import pi
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from experiment_utils import *
 import random
+import qiskit_textbook.tools as qt
+
 """
 Functions related to quantum algorithms
 """
@@ -31,6 +33,28 @@ def qft(circuit, n):
     qft_rotations(circuit, n)
     swap_registers(circuit, n)
     return circuit
+
+"""
+This functions are of my own authoring.
+"""
+def simon_circuit(s):
+   n = len(s)
+   # intialize a two bits for each bit in the secret sequence
+   qc = QuantumCircuit(2*n,2*n)
+   # apply haddamard to get superposition
+   qc.h(range(n))
+   qc.barrier()
+   qc += qt.simon_oracle(s)
+   qc.barrier()
+   # measure the lower circuits (|0>)
+   qc.measure(range(2*n),range(2*n))
+   qc.barrier()
+   # apply another hadamard gate
+   qc.h(range(n))
+   qc.measure(range(n),range(n))
+   return qc
+   
+
 
 
 def deutch_jozsa(qc,initialize_jozsa = True):
