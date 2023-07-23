@@ -2,7 +2,7 @@ from math import pi
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from experiment_utils import *
 import random
-import qiskit_textbook.tools as qt
+from qiskit_textbook.tools import simon_oracle
 import os
 import sys
 
@@ -42,23 +42,31 @@ def qft(circuit, n):
 """
 This functions are of my own authoring.
 """
-def simon_circuit(s):
-   n = len(s)
-   # intialize a two bits for each bit in the secret sequence
-   qc = QuantumCircuit(2*n,2*n)
-   # apply haddamard to get superposition
-   qc.h(range(n))
-   qc.barrier()
-   so = qt.simon_oracle(s)
-   qc = qc.append(so)
-   qc.barrier()
-   # measure the lower circuits (|0>)
-   qc.measure(range(2*n),range(2*n))
-   qc.barrier()
-   # apply another hadamard gate
-   qc.h(range(n))
-   qc.measure(range(n),range(n))
-   return qc
+def simonCircuit(s):
+    """
+    Inputs: Secret sequence s
+    Problem statement:
+    F(x) = F(y) if y = x + s
+    """
+    # get the length of the sequence
+    n = len(s)
+    # instance two qubits for each bit in the sequence
+    qc = QuantumCircuit(2*n, 2*n)
+    # apply superpositiion
+    qc.h(range(n))
+    qc.barrier()
+    # apply the unknown oracle function
+    qc += simon_oracle(s)
+    qc.barrier()
+    # measure
+    qc.measure(range(n, 2*n), range(n, 2*n))
+    qc.barrier()
+    # another superposition
+    qc.h(range(n))
+    # measurement
+    qc.measure(range(n), range(n))
+    return qc
+    
    
 
 
