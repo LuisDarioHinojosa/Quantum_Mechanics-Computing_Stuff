@@ -76,7 +76,7 @@ def superdence_coding(s):
   qc.barrier()
 
   # measure the qubit
-  qc.measure(range(0,2),range(0,2))
+  qc.measure(range(2),range(2))
 
   return qc
   
