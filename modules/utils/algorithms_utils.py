@@ -56,7 +56,7 @@ def superdence_coding(s):
   Output: The superdence coding quantum circuit corresponding to the input sequence.
   """
   # initialize the quantum circuit
-  qc = QuantumCircuit(2,'00')
+  qc = QuantumCircuit(2)
   
   # get the entangled state 
   qc.h(0)
