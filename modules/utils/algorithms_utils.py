@@ -47,7 +47,7 @@ def qft(circuit, n):
 This functions are of my own authoring.
 """
 
-def superdence_coding(s):
+def superdense_coding(s):
   """
   Superdense coding is a quantum communication algorithm in which to classical bits are sent using a single qubit.
   The qubit is suposed to be shared between an emisor and a receiber. It consist on one system per party, and 
@@ -56,7 +56,9 @@ def superdence_coding(s):
   Output: The superdence coding quantum circuit corresponding to the input sequence.
   """
   # initialize the quantum circuit
-  qc = QuantumCircuit(2)
+  cr = ClassicalRegister(2)
+  qr = QuantumRegister(2)
+  qc = QuantumCircuit(qr,cr)
   
   # get the entangled state 
   qc.h(0)
@@ -75,12 +77,12 @@ def superdence_coding(s):
   qc.h(0)
   qc.barrier()
 
-  # measure the qubit
-  qc.measure(range(2),range(2))
-
-  return qc
+  # measure the quantum circuit
+  for i in range(2):
+    qc.measure(i,i)
   
- 
+  return qc
+
 
 def simon_circuit(s):
   """
