@@ -1,4 +1,3 @@
-from qiskit.providers.aer import QasmSimulator
 from qiskit.visualization import plot_bloch_multivector
 from qiskit import transpile,execute
 import os
