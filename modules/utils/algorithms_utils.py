@@ -160,3 +160,37 @@ def deutch_jozsa(qc,initialize_jozsa = True):
   for i in range(num_qubits):
     qc.measure(i,i)
   return qc
+
+
+# quantum phase estimation
+def quantum_phase_estimation(n,angle):
+  qc = QuantumCircuit(n,n-1)
+  # initialize the quantum circuit
+  # apply the haddamard gates
+  initialize_quantum_circuit(qc,list(range(0,n-1)),hadamard=True)
+  # apply the x gate to transition the last qubit into |1>
+  initialize_quantum_circuit(qc,[n-1],hadamard=False)
+  angle = pi * angle
+
+  qc.barrier()
+
+  # controlled phase gates
+  for i in range(0,n-1):
+    for j in range(2 ** i):
+      qc.cp(angle,i,n-1)
+  qc.barrier()
+
+  # implement inverse quantum fourier transform
+  for i in range(0,n//2):
+    qc.swap(i,n-i-1)
+  for i in range(n):
+    for j in range(i):
+      qc.cp(-pi/float(2**(i-j)),i,j)
+    qc.h(i)
+  
+  qc.barrier()
+
+  # measure
+  qc.measure(range(0,n-1),range(0,n-1))
+
+  return qc
