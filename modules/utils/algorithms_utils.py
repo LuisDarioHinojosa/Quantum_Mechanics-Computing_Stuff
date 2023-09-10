@@ -194,3 +194,80 @@ def quantum_phase_estimation(n,angle):
   qc.measure(range(0,n-1),range(0,n-1))
 
   return qc
+
+
+# Grover Algorithm Functions
+def cccZ():
+  """
+  Triple Control Z Rotation:
+  It is a gate that only present a rotations in the last qubit if the first three qubits are in the exited state
+  """
+  qc = QuantumCircuit(4)
+  qc.cp(pi/4, 0, 3)
+  qc.cx(0, 1)
+  qc.cp(-pi/4, 1, 3)
+  qc.cx(0, 1)
+  qc.cp(pi/4, 1, 3)
+  qc.cx(1, 2)
+  qc.cp(-pi/4, 2, 3)
+  qc.cx(0, 2)
+  qc.cp(pi/4, 2, 3)
+  qc.cx(1, 2)
+  qc.cp(-pi/4, 2, 3)
+  qc.cx(0, 2)
+  qc.cp(pi/4, 2, 3)
+  gate = qc.to_gate(label=' cccZ')
+  return gate
+
+
+def grover_difussion_operator():
+  """
+  Inversion along the mean
+  """
+  qc = QuantumCircuit(4)
+  qc.h(range(4))
+  qc.x(range(4))
+  qc.append(cccZ(), [0, 1, 2, 3])
+  qc.x(range(4))
+  qc.h(range(4))
+  gate = qc.to_gate(label=" Diffusion")
+  return gate
+
+
+def grover_oracle(n):
+  """
+  Takes the 4 bit string and returns the gate that comprehends
+  - Grover Oracle
+  - INVERSION
+  """
+  qc = QuantumCircuit(4)
+  if (n[3] != str(1)):
+    qc.x(0)
+  if (n[2] != str(1)):
+    qc.x(1)
+  if (n[1] != str(1)):
+    qc.x(2)
+  if (n[0] != str(1)):
+    qc.x(3)
+  qc.append(cccZ(), [0, 1, 2, 3])
+  if (n[3] != str(1)):
+    qc.x(0)
+  if (n[2] != str(1)):
+    qc.x(1)
+  if (n[1] != str(1)):
+    qc.x(2)
+  if (n[0] != str(1)):
+    qc.x(3)
+  gate = qc.to_gate(label=' Grover Oracle')
+  return gate
+
+def grover_iteration(inp):
+  """
+  Receives a quantum circuit as input, creates the corresponding grover algorithm, 
+  appends the input to the circuit, and returns it converted into a gate. 
+  """
+  qc = QuantumCircuit(4)
+  qc.append(grover_oracle(inp), [0, 1, 2, 3])
+  qc.append(grover_difussion_operator(), [0, 1, 2, 3])
+  gate = qc.to_gate(label = ' Grover Iterate')
+  return gate

@@ -2,6 +2,7 @@ from qiskit.visualization import plot_bloch_multivector
 from qiskit import transpile,execute
 import os
 import sys
+from qiskit.quantum_info import partial_trace,Statevector
 
 file_dir = os.path.dirname(__file__)
 sys.path.append(file_dir)
@@ -59,3 +60,6 @@ def make_meaurement(qc,qr,cr,output_qubits,irregular = False):
   else:
     for c,q in enumerate(output_qubits):
       qc.measure(qr[q],qc[c])
+
+def get_partial_trace(qc,n,backend):
+  return partial_trace(execute(qc, backend).result().get_statevector(), [n])
