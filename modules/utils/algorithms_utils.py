@@ -1,10 +1,14 @@
-from math import pi
+from math import pi, gcd
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from experiment_utils import *
 import random
 import qiskit_textbook.tools as qt
 import os
 import sys
+import pandas as pd
+import numpy as np
+from fractions import Fraction
+
 
 
 # added to be able to use the experiment_utils script.  
@@ -271,3 +275,59 @@ def grover_iteration(inp):
   qc.append(grover_difussion_operator(), [0, 1, 2, 3])
   gate = qc.to_gate(label = ' Grover Iterate')
   return gate
+
+
+# Shor Algorithm Functions
+
+def c_amod15(a, power):
+  """Controlled multiplication by a mod 15"""
+  if a not in [2,7,8,11,13]:
+    raise ValueError("'a' must be 2,7,8,11 or 13")
+  U = QuantumCircuit(4)        
+  for iteration in range(power):
+    if a in [2,13]:
+      U.swap(0,1)
+      U.swap(1,2)
+      U.swap(2,3)
+    if a in [7,8]:
+      U.swap(2,3)
+      U.swap(1,2)
+      U.swap(0,1)
+    if a == 11:
+      U.swap(1,3)
+      U.swap(0,2)
+    if a in [7,11,13]:
+      for q in range(4):
+        U.x(q)
+  U = U.to_gate()
+  U.name = "%i^%i mod 15" % (a, power)
+  c_U = U.control()
+  return c_U
+
+def qft_dagger(n):
+  """n-qubit QFTdagger the first n qubits in circ"""
+  qc = QuantumCircuit(n)
+  # Don't forget the Swaps!
+  for qubit in range(n//2):
+    qc.swap(qubit, n-qubit-1)
+  for j in range(n):
+    for m in range(j):
+      qc.cp(-np.pi/float(2**(j-m)), m, j)
+    qc.h(j)
+  qc.name = "QFT†"
+  return qc
+
+def getDataFrame(n_count, counts):
+  rows, measured_phases = [], []
+  for output in counts:
+    decimal = int(output, 2)  # Convert (base 2) string to decimal
+    phase = decimal/(2**n_count)  # Find corresponding eigenvalue
+    measured_phases.append(phase)
+  rows = []
+  for phase in measured_phases:
+    frac = Fraction(phase).limit_denominator(15)
+    rows.append([phase, f"{frac.numerator}/{frac.denominator}", frac.denominator])
+  # Print as a table
+  headers=["Phase", "Fraction", "Guess for r"]
+  df = pd.DataFrame(rows, columns=headers)
+  return df
