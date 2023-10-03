@@ -8,8 +8,8 @@ import sys
 import pandas as pd
 import numpy as np
 from fractions import Fraction
-
-
+from qiskit_textbook.tools import random_state
+from qiskit.extensions import Initialize
 
 # added to be able to use the experiment_utils script.  
 file_dir = os.path.dirname(__file__)
@@ -331,3 +331,29 @@ def getDataFrame(n_count, counts):
   headers=["Phase", "Fraction", "Guess for r"]
   df = pd.DataFrame(rows, columns=headers)
   return df
+
+
+# Quantum teleportation
+def quantum_teleportation_iteration():
+  # create quantum register
+  qr = QuantumRegister(3) # there are two entanngled qubits and alice's personal qubit
+  crx,crz = ClassicalRegister(1),ClassicalRegister(1) # initialize the clasical registers for alice to make measurements
+  qc =  QuantumCircuit(qr,crz,crx)
+
+  # initialize alice's personal qubit with a random state
+  w = random_state(1)
+  qc.append(Initialize(w), [0]) # initialize the personal qubit
+
+  qc.barrier()
+  qc.h(1)
+  qc.cx(1,2)
+  qc.barrier()
+  qc.cx(0,1)
+  qc.h(0)
+  qc.measure(range(0,2),range(0,2))
+
+  # alice sends qubit and bit sequences
+  qc.barrier()
+  qc.x(2).c_if(crx,1)
+  qc.z(2).c_if(crz,1)
+  return qc,w
