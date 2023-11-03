@@ -331,3 +331,15 @@ def getDataFrame(n_count, counts):
   headers=["Phase", "Fraction", "Guess for r"]
   df = pd.DataFrame(rows, columns=headers)
   return df
+
+
+# quantum hamiltonian simulation
+def hamiltonian(t):
+  qc = QuantumCircuit(2, 2)
+  qc.h(range(2))
+  qc.cx(0, 1)
+  qc.rz(np.pi*t, 1)
+  qc.cx(0, 1)
+  qc.h(range(2))
+  qc.measure(range(2), range(2))
+  return qc
