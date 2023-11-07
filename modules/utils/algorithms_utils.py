@@ -356,3 +356,15 @@ def quantum_teleportation_iteration():
   qc.x(2).c_if(crx,1)
   qc.z(2).c_if(crz,1)
   return qc,w
+
+
+# quantum hamiltonian simulation
+def hamiltonian(t):
+  qc = QuantumCircuit(2, 2)
+  qc.h(range(2))
+  qc.cx(0, 1)
+  qc.rz(np.pi*t, 1)
+  qc.cx(0, 1)
+  qc.h(range(2))
+  qc.measure(range(2), range(2))
+  return qc
