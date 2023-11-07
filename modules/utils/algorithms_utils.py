@@ -241,8 +241,7 @@ def grover_difussion_operator():
 def grover_oracle(n):
   """
   Takes the 4 bit string and returns the gate that comprehends
-  - Grover Oracle
-  - INVERSION
+  Grover Oracle
   """
   qc = QuantumCircuit(4)
   if (n[3] != str(1)):
